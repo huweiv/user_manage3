@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huweiv.dao.RoleDao">
+
+    <delete id="deleteUserIdAndRoleIdByRoleIds" parameterType="Long[]">
+        delete from sys_user_role
+        <where>
+            <foreach collection="array" item="id" open="roleId in(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+    
+    <delete id="deleteByIds" parameterType="Long[]">
+        delete from sys_role
+        <where>
+            <foreach collection="array" item="id" open="id in(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+
+    <select id="selectByCondition" parameterType="com.huweiv.domain.Role" resultType="com.huweiv.domain.Role">
+        select * from sys_role
+        <where>
+            <if test="roleName != null and roleName != ''">
+                and roleName like #{roleName}
+            </if>
+            <if test="roleDesc != null and roleDesc != ''">
+                and roleDesc like #{roleDesc}
+            </if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="com.huweiv.domain.Role">
+        update sys_role set
+         <if test="roleName != null and roleName != ''">
+             roleName=#{roleName},
+         </if>
+        roleDesc=#{roleDesc} where id=#{id}
+    </update>
+
+</mapper>
